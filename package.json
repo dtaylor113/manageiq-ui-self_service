@@ -18,6 +18,7 @@
     "angular": "1.5.9",
     "angular-animate": "1.5.9",
     "angular-base64": "2.0.5",
+    "angular-bootstrap-switch": "0.5.1",
     "angular-cookies": "1.5.9",
     "angular-drag-and-drop-lists": "2.0.0",
     "angular-dragdrop": "^1.0.13",

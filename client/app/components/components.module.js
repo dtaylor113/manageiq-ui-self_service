@@ -7,6 +7,7 @@
     'ui.sortable',
     'ngDragDrop',
     'patternfly',
+    'frapontillo.bootstrap-switch',
     'svgBaseFix',
     'dndLists',
     'flowChart',
