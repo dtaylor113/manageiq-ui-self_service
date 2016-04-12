@@ -122,6 +122,9 @@ module.exports = (function() {
         './node_modules/bardjs/bard.js',
         './node_modules/sinon/pkg/sinon.js',
         './node_modules/karma-read-json/karma-read-json.js',
+        client + 'fixtures/**/*.json',
+
+        wiredep({devDependencies: true}).js,
         specHelperFiles,
         getClientJsFiles(true, true),
         config.templatecache.build + config.templatecache.output,
@@ -141,7 +144,22 @@ module.exports = (function() {
         'client/app/**/*.js': ['babel', 'coverage'],
         'tests/**/*.js': ['babel'],
       },
+      plugins: [
+        'karma-json-fixtures-preprocessor'
+      ],
+      jsonFixturesPreprocessor: {
+        // strip this from the file path \ fixture name
+        stripPrefix: client + 'fixtures/',
+        // strip this to the file path \ fixture name
+        prependPrefix: '',
+        // change the global fixtures variable name
+        variableName: '__fixtures__',
+        // camelize fixture filenames (e.g 'fixtures/aa-bb_cc.json' becames __fixtures__['fixtures/aaBbCc'])
+        camelizeFilenames: true,
+      }
     };
+    options.preprocessors[client + 'fixtures/**/*.json']  = ['json_fixtures'];
+    options.preprocessors[client + 'app/**/*.js'] = ['coverage'];
 
     return options;
   }
