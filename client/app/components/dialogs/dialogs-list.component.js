@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function DialogListController(DialogsState, $filter, Language, ListView) {
+  function DialogListController($state, DialogsState, $filter, Language, ListView) {
     var vm = this;
 
     vm.title = __('Dialogs List');
@@ -21,6 +21,7 @@
     vm.listConfig = {
       selectItems: false,
       showSelectBox: false,
+      onClick: handleClick
     };
     vm.toolbarConfig = {
       filterConfig: {
@@ -49,9 +50,23 @@
         currentField: DialogsState.getSort().currentField,
       },
       actionsConfig: {
-        primaryActions: [],
+        primaryActions: [
+          {
+            name: __('Create'),
+            title: __('Create a new Service Dialog'),
+            actionFn: createDialog,
+          }
+        ],
       },
     };
+
+    function createDialog() {
+      $state.go('designer.dialogs.edit', {dialogId: 'new'});
+    }
+
+    function handleClick(item, e) {
+      $state.go('designer.dialogs.details', {dialogId: item.id});
+    }
 
     function getSortConfigFields() {
       return [
