@@ -21,7 +21,7 @@
     vm.listConfig = {
       selectItems: false,
       showSelectBox: false,
-      onClick: handleClick
+      onClick: handleClick,
     };
     vm.toolbarConfig = {
       filterConfig: {
@@ -55,7 +55,7 @@
             name: __('Create'),
             title: __('Create a new Service Dialog'),
             actionFn: createDialog,
-          }
+          },
         ],
       },
     };
