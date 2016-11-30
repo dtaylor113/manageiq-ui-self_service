@@ -124,7 +124,6 @@ module.exports = (function() {
         './node_modules/karma-read-json/karma-read-json.js',
         client + 'fixtures/**/*.json',
 
-        wiredep({devDependencies: true}).js,
         specHelperFiles,
         getClientJsFiles(true, true),
         config.templatecache.build + config.templatecache.output,
