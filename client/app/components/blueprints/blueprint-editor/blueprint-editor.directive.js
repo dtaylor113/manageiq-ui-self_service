@@ -37,6 +37,11 @@
 
     var blueprintDirty = false;
 
+    vm.editable = true;
+    if (vm.blueprint.status !== undefined && vm.blueprint.status === 'published'){
+      vm.editable = false;
+    }
+
     BlueprintsState.saveOriginalBlueprint(angular.copy(vm.blueprint));
 
     // if new blueprint, focus on name field
@@ -71,7 +76,7 @@
 
     vm.editDetails = function() {
       vm.loading = true;
-      BlueprintDetailsModal.showModal('edit', vm.blueprint).then(
+      BlueprintDetailsModal.showModal('edit', vm.blueprint, vm.editable).then(
           function() {
             vm.loading = false;
           });

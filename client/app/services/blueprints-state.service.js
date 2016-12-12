@@ -78,19 +78,54 @@
       return blueprint.doNotSaveFlag;
     };
 
-    blueprint.saveBlueprint = function(tmpBlueprint) {
+    blueprint.publishBlueprint = function(tmpBlueprint) {
+      var deferred = $q.defer();
+      var origBlueprint = blueprint.getOriginalBlueprint();
+      if (!angular.equals(origBlueprint, tmpBlueprint)) {
+        // save the changed blueprint
+        blueprint.saveBlueprint(tmpBlueprint).then(function(id) {
+          // publish blueprint
+          blueprint.saveBlueprint(tmpBlueprint, true).then(function() {
+            deferred.resolve();
+          }, publishfailure);
+        }, savefailure);
+      } else {
+        // just publish the unchanged blueprint
+        blueprint.saveBlueprint(tmpBlueprint, true).then(function() {
+          deferred.resolve();
+        }, publishfailure);
+      }
+
+      function savefailure() {
+        $log.info("Failed to save '" + tmpBlueprint.name + "' before publication.");
+        deferred.reject();
+      }
+
+      function publishfailure(errorMsg) {
+        $log.info("Failed to publish '" + tmpBlueprint.name + "': " + errorMsg);
+        deferred.reject(errorMsg);
+      }
+
+      return deferred.promise;
+    };
+
+    blueprint.saveBlueprint = function(tmpBlueprint, andPublish) {
       var deferred = $q.defer();
 
-      saveBlueprintProperties(tmpBlueprint).then(function(id) {
-        $log.info("'" + tmpBlueprint.name + "' Blueprint Properties were saved.");
+      saveBlueprintProperties(tmpBlueprint, andPublish).then(function(id) {
+        if (andPublish) {
+          $log.info("'" + tmpBlueprint.name + "' Blueprint was published.");
+        } else {
+          $log.info("'" + tmpBlueprint.name + "' Blueprint Properties were saved.");
+        }
         saveBlueprintTags(id, tmpBlueprint).then(function() {
           $log.info("'" + tmpBlueprint.name + "' Blueprint Tags were saved.");
           deferred.resolve(id);
         }, saveTagsfailure);
       }, savePropsfailure);
 
-      function savePropsfailure() {
-        deferred.reject();
+      function savePropsfailure(errorMsg) {
+        deferred.reject(errorMsg);
       }
 
       function saveTagsfailure() {
@@ -100,12 +135,10 @@
       return deferred.promise;
     };
 
-    function saveBlueprintProperties(tmpBlueprint) {
+    function saveBlueprintProperties(tmpBlueprint, andPublish) {
       var deferred = $q.defer();
 
-      var blueprintObj = getBlueprintPostObj(tmpBlueprint);
-
-      // $log.debug("Saving Blueprint = " + angular.toJson(blueprintObj, true));
+      var blueprintObj = getBlueprintPostObj(tmpBlueprint, andPublish);
 
       if (tmpBlueprint.id) {
         CollectionsApi.post('blueprints', tmpBlueprint.id, {}, blueprintObj).then(updateSuccess, updateFailure);
@@ -117,9 +150,9 @@
         deferred.resolve(response.id);
       }
 
-      function updateFailure() {
-        $log.error('There was an error saving this blueprints properties.');
-        deferred.reject();
+      function updateFailure(error) {
+        var errorMsg = error.status + " : " + error.statusText;
+        deferred.reject(errorMsg);
       }
 
       function createSuccess(response) {
@@ -131,18 +164,28 @@
         deferred.reject();
       }
 
-      function getBlueprintPostObj(tmpBlueprint) {
-        var blueprintObj = {
-          "name": tmpBlueprint.name,
-          "description": tmpBlueprint.description,
-          "ui_properties": tmpBlueprint.ui_properties,
-        };
+      function getBlueprintPostObj(tmpBlueprint, andPublish) {
+        var blueprintObj;
 
-        blueprintObj.ui_properties.num_items = tmpBlueprint.ui_properties.chart_data_model.nodes.length;
+        if (andPublish) {
+          blueprintObj = {
+            "action": "publish"
+          };
+        } else {
+          blueprintObj = {
+            "name": tmpBlueprint.name,
+            "description": tmpBlueprint.description,
+            "ui_properties": tmpBlueprint.ui_properties,
+          };
 
-        if (tmpBlueprint.id) {
-          blueprintObj.action = "edit";
+          blueprintObj.ui_properties.num_items = tmpBlueprint.ui_properties.chart_data_model.nodes.length;
+
+          if (tmpBlueprint.id) {
+            blueprintObj.action = "edit";
+          }
         }
+
+        // $log.info("blueprint obj = " + angular.toJson(blueprintObj, true));
 
         return blueprintObj;
       }
@@ -289,7 +332,7 @@
         newNode.tags = [];
       } else {
         item.disableInToolbox = true;
-        getTagsForServiceItem(newNode.id).then(function(tags) {
+        blueprint.getTagsForItem('service_templates', newNode.id).then(function(tags) {
           newNode.tags = tags;
         });
       }
@@ -297,7 +340,7 @@
       return newNode;
     };
 
-    function getTagsForServiceItem(id) {
+    blueprint.getTagsForItem = function (collectionType, id) {
       var deferred = $q.defer();
 
       var attributes = ['categorization', 'category.id', 'category.single_value'];
@@ -306,7 +349,7 @@
         attributes: attributes,
       };
 
-      var collection = 'service_templates/' + id + '/tags';
+      var collection = collectionType+ '/' + id + '/tags';
 
       CollectionsApi.query(collection, options).then(loadSuccess, loadFailure);
 

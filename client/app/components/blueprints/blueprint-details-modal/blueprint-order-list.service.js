@@ -14,7 +14,7 @@
      * This method converts the service items on a blueprint's canvas into a structure
      * required for the DND Provision and Action Order Lists.
      */
-    orderListSrv.setOrderLists = function(obj) {
+    orderListSrv.setOrderLists = function(obj, editable) {
       var blueprintServiceItems = obj.blueprint.ui_properties.chart_data_model.nodes;
       var items = angular.copy(blueprintServiceItems);
       var lists = [];
@@ -28,6 +28,7 @@
       for (i = 0; i < items.length; i++) {
         item = items[i];
         item.type = "item";
+        item.disabled = !editable;
         if (!item.provision_order) {
           item.provision_order = 0;
         }
@@ -80,11 +81,11 @@
       } else {
         // action order == prov. order
         obj.actionOrderEqualsProvOrder = true;
-        orderListSrv.initActionOrderFromProvOrderList(obj);
+        orderListSrv.initActionOrderFromProvOrderList(obj, editable);
       }
     };
 
-    orderListSrv.initActionOrderFromProvOrderList = function(obj) {
+    orderListSrv.initActionOrderFromProvOrderList = function(obj, editable) {
       // Make actionOrder list a new list, set parentListName to 'actionOrder'
       var actionOrderList = angular.copy(obj.dndModels.provOrder.list);
       for (var l = 0; l < actionOrderList.length; l++) {
@@ -92,7 +93,7 @@
           for (var col = 0; col < actionOrderList[l].columns[cols].length; col++) {  // Number of items in a column
             var item = actionOrderList[l].columns[cols][col];
             item.parentListName = "actionOrder";
-            item.disabled = obj.actionOrderEqualsProvOrder;
+            item.disabled = editable ? obj.actionOrderEqualsProvOrder : true;
           }
         }
       }

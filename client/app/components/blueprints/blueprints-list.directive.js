@@ -64,13 +64,14 @@
       {
         name: __('Publish'),
         title: __('Publish Blueprint'),
+        class: 'btn-primary',
         actionFn: publishBlueprint,
       },
     ];
 
     vm.enableButtonForItemFn = function(action, item) {
       if (action.name === __('Publish')) {
-        if (item.ui_properties.num_items > 0 && !item.published) {
+        if (item.ui_properties.num_items > 0 && item.status !== 'published') {
           return true;
         } else {
           return false;
@@ -188,7 +189,13 @@
           }
         }
       } else {
-        BlueprintDetailsModal.showModal('publish', item);
+        BlueprintsState.getTagsForItem('blueprints', item.id).then(function(tags) {
+          item.tags = tags;
+          BlueprintsState.saveOriginalBlueprint(angular.copy(item));
+          BlueprintDetailsModal.showModal('publish', item);
+        }, function() {
+          EventNotifications.error(__("Failed to retrieve tags for blueprint '" + item.name +  "'."));
+        });
       }
     }
 
@@ -273,8 +280,8 @@
           return item.ui_properties.service_catalog.name.toLowerCase().indexOf(filter.value.toLowerCase()) !== -1;
         }
       } else if (filter.id === 'publishState') {
-        if ((filter.value.toLowerCase() === "published" && item.published)
-          || (filter.value.toLowerCase() === "draft" && !item.published)) {
+        if ((filter.value.toLowerCase() === "published" && item.status === 'published')
+          || (filter.value.toLowerCase() === "draft" && item.status !== 'published')) {
           return true;
         } else {
           return false;

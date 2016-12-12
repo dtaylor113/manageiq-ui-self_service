@@ -19,6 +19,7 @@ angular.module('flowChart', ['dragging'] )
     replace: true,
     scope: {
       chart: "=chart",
+      editable: "="
     },
 
     //
@@ -174,6 +175,10 @@ angular.module('flowChart', ['dragging'] )
   // Called on mouse down in the chart.
   //
   $scope.mouseDown = function(evt) {
+    if(!$scope.editable) {
+      return;
+    }
+
     if ($scope.inConnectingMode ) {
       // camceling out of connection mode, remove unused output connector
       $scope.cancelConnectingMode();
@@ -231,7 +236,9 @@ angular.module('flowChart', ['dragging'] )
   // Handle nodeMouseOver on an node.
   //
   $scope.nodeMouseOver = function(evt, node) {
-    $scope.mouseOverNode = node;
+    if($scope.editable) {
+      $scope.mouseOverNode = node;
+    }
   };
 
   //
@@ -247,6 +254,10 @@ angular.module('flowChart', ['dragging'] )
   $scope.nodeMouseDown = function(evt, node) {
     var chart = $scope.chart;
     var lastMouseCoords;
+
+    if(!$scope.editable) {
+      return;
+    }
 
     dragging.startDrag(evt, {
 
@@ -340,7 +351,7 @@ angular.module('flowChart', ['dragging'] )
   // Handle connectionMouseOver on an connection.
   //
   $scope.connectionMouseOver = function(evt, connection) {
-    if (!$scope.draggingConnection) {  // Only allow 'connection mouse over' when not dragging out a connection.
+    if (!$scope.draggingConnection && $scope.editable) {  // Only allow 'connection mouse over' when not dragging out a connection.
       $scope.mouseOverConnection = connection;
     }
   };
@@ -368,7 +379,9 @@ angular.module('flowChart', ['dragging'] )
   // Handle connectorMouseOver on an connector.
   //
   $scope.connectorMouseOver = function(evt, node, connector, connectorIndex, isInputConnector) {
-    $scope.mouseOverConnector = connector;
+    if($scope.editable) {
+      $scope.mouseOverConnector = connector;
+    }
   };
 
   //
