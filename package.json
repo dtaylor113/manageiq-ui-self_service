@@ -143,6 +143,7 @@
     "express": "^4.14.0",
     "http-proxy": "1.16.2",
     "jshint-json": "1.0.0",
+    "karma-json-fixtures-preprocessor": "^0.0.6",
     "morgan": "1.7.0",
     "serve-favicon": "2.3.2"
   },
