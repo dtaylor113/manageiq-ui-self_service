@@ -69,7 +69,7 @@
         new DialogField(
           "DialogFieldDropDownList",
           "fa fa-caret-square-o-down",
-          __("Dropdown List"),
+          __("Dropdown"),
           {
             data_type: "string",
             values: [],
@@ -91,13 +91,13 @@
         new DialogField(
           "DialogFieldDateControl",
           "fa fa-calendar",
-          __("Date Control")
+          __("Datepicker")
         ),
       dialogFieldDateTimeControl:
         new DialogField(
           "DialogFieldDateTimeControl",
           "fa fa-clock-o",
-          __("Date Time Control")
+          __("Timepicker")
         ),
       dialogFieldTagControl:
         new DialogField(

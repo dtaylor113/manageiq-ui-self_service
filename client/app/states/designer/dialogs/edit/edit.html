@@ -4,7 +4,7 @@
     <a ui-sref="designer.dialogs">{{'Dialogs'|translate}}</a>
   </li>
   <li class="active">
-    <input id="dialogLabel" type="text" class="blueprint-name-input" ng-model="vm.dialog.content[0].label"
+    <input id="dialogLabel" type="text" ng-model="vm.dialog.content[0].label"
            placeholder="{{'Untitled Dialog'|translate}}">
   </li>
   <span class="actions">
@@ -20,26 +20,47 @@
   </span>
 </ol>
 
-<div class="col-md-12 ss-details-wrapper">
-  <div class="row">
-    <div class="col-md-6">
-      <h2 translate>Dialog Content</h2>
-      <dialog-editor-tabs></dialog-editor-tabs>
-      <dialog-editor-boxes></dialog-editor-boxes>
-    </div>
-    <div class="col-md-6">
-      <h2 translate>Toolbox</h2>
+<div class="dialog-designer-container">
+
+  <div class="section-toolbar">
+    <button id="toggleToolbox" class="btn btn-primary" type="button" ng-click="vm.toggleToolbox()"
+            tooltip-placement="bottom" uib-tooltip="{{'Add Dialog Field Item'|translate}}" translate>Add
+      <span class="fa" ng-class="{'fa-angle-double-up': vm.toolboxVisible, 'fa-angle-double-down': !vm.toolboxVisible}"></span>
+    </button>
+    <span class="more-actions">
+        <a ng-click="vm.duplicateSelectedItem()">
+          <span id="duplicateItem" class="pficon fa fa-copy"
+                tooltip-append-to-body="true" tooltip-placement="bottom"
+                uib-tooltip="{{'Duplicate Item (Ctrl-D)'|translate}}">
+          </span>
+        </a>
+        <a ng-click="vm.removeSelectedItem()">
+          <span id="removeItems" class="pficon pficon-delete"
+                tooltip-append-to-body="true" tooltip-placement="bottom"
+                uib-tooltip="{{'Remove Items'|translate}}">
+          </span>
+        </a>
+        <span class="preview-dialog">
+            <input  ng-model="vm.hideConnectors"
+                    ng-change="vm.toggleshowHideConnectors()"
+                    type="checkbox"
+                    ng-checked="vm.hideConnectors">
+            <span class="preview-dialog-label" translate>Preview Dialog</span>
+        </span>
+    </span>
+  </div>
+
+  <div class="toolbox-container">
+
+    <div class="static-field-container" id="toolbox" ng-if="vm.toolboxVisible">
       <div class='draggable'>
         <dialog-editor-field-static></dialog-editor-field-static>
       </div>
     </div>
-  </div>
-  <div class="pull-right">
-    <button type="button" class="btn btn-default" ng-click="vm.dismissChanges()" translate>Cancel</button>
-    <button type="button"
-            class="btn btn-primary"
-            ng-click="vm.saveDialogDetails()"
-            ng-disabled="vm.dialogUnchanged()" translate>Save
-    </button>
+
+    <div ng-class="{'editable-fields-container': vm.toolboxVisible, 'editable-fields-container-alone': !vm.toolboxVisible}" class="ss-details-wrapper">
+      <dialog-editor-tabs></dialog-editor-tabs>
+      <dialog-editor-boxes></dialog-editor-boxes>
+    </div>
   </div>
 </div>

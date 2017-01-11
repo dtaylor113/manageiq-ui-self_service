@@ -54,10 +54,17 @@
     DialogEditor.setData(dialog);
 
     vm.dialog = dialog;
+    vm.toggleToolbox = toggleToolbox;
     vm.editDialogDetails = editDialogDetails;
     vm.saveDialogDetails = saveDialogDetails;
     vm.dismissChanges = dismissChanges;
     vm.dialogUnchanged = dialogUnchanged;
+
+    vm.toolboxVisible = true;
+
+    function toggleToolbox() {
+      vm.toolboxVisible = !vm.toolboxVisible;
+    }
 
     function dialogUnchanged() {
       return DialogEditor.isDialogDataUnchanged();

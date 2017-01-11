@@ -1,0 +1,133 @@
+.dialog-designer-container
+  background-color: $color-white
+  height: 100%
+  width: 100%
+
+  .section-toolbar
+    padding: 15px
+
+    a
+      color: $color-mine-shaft-approx
+
+    button
+      margin-right: 6px
+
+    .more-actions
+      border-left: solid 2px $color-light-gray-approx
+      margin-left: 6px
+      vertical-align: middle
+
+    .dialog-details-btn
+      margin-left: 16px
+
+    .pficon
+      font-size: 20px
+      margin-left: 15px
+      margin-top: -4px
+      vertical-align: middle
+
+    .preview-dialog
+      display: block
+      float: right
+      font-size: 12px
+      font-weight: 600
+      padding-right: 5px
+      padding-top: 2px
+      vertical-align: middle
+
+    .preview-dialog-label
+      vertical-align: text-bottom
+
+  .toolbox-container
+    height: 100%
+    position: relative
+    width: 100%
+
+    .static-field-container
+      background-color: $color-white-94
+      border: 1.5px solid $color-light-gray-approx
+      box-shadow: 0 2px 6px $color-black-30
+      padding-left: 12px
+      position: absolute
+
+      .draggable-item-icon
+        font-size: 28px
+        padding-right: 6px
+        padding-top: 6px
+        vertical-align: middle
+
+      .field-list
+        list-style: none
+        width: 114px
+        overflow-y: auto
+        padding-bottom: 4px
+        padding-left: 0
+
+      .field-item
+        background-color: $color-white-94
+        border: 1px solid $color-gray-1
+        border-radius: 1px
+        box-shadow: 0 2px 6px $color-black-20
+        cursor: pointer
+        margin-right: 16px
+        margin-top: 10px
+        height: 70px
+        width: 103px
+        padding-left: 8px
+        position: relative
+        text-align: center
+        vertical-align: middle
+        z-index: 600
+
+        .fa
+          font-size: 26px
+          margin-top: 6px
+          vertical-align: middle
+
+        span
+          position: relative
+          top: 4px
+
+        img
+          height: 100%
+          margin-right: 8px
+          object-fit: contain
+
+        &::before
+          background-image: linear-gradient(to bottom, $color-lochmara-approx 60%, $color-white 0%)
+          background-position: left
+          background-repeat: repeat-y
+          background-size: 2px 5px
+          border: 4px solid $color-lochmara-approx
+          bottom: 4px
+          content: ''
+          left: 4px
+          position: absolute
+          top: 3px
+          width: 10px
+
+    .editable-fields-container
+      padding-left: 140px
+      width: 80%
+
+    .editable-fields-container-alone
+        width: 80%
+
+    a
+      color: $color-black
+
+    ::-webkit-input-placeholder
+      font-style: italic
+      padding-left: 10px
+
+    :-moz-placeholder
+      font-style: italic
+      padding-left: 10px
+
+    ::-moz-placeholder
+      font-style: italic
+      padding-left: 10px
+
+    :-ms-input-placeholder
+      font-style: italic
+      padding-left: 10px
