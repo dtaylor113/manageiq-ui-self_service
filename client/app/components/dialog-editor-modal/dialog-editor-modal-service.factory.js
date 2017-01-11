@@ -12,7 +12,7 @@
 
     return modalDialog;
 
-    function showModal(tab, box, field) {
+    function showModal(dialog, tab, box, field) {
       var modalOptions = {
         templateUrl: 'app/components/dialog-editor-modal/dialog-editor-modal.html',
         controller: DialogEditorModalController,
@@ -27,7 +27,7 @@
       return modal.result;
 
       function resolveDialogDetails() {
-        return {tabId: tab, boxId: box, fieldId: field};
+        return {dialogId: dialog, tabId: tab, boxId: box, fieldId: field};
       }
     }
   }
@@ -53,6 +53,10 @@
 
     // recognize edited element type
     if (angular.isUndefined(vm.dialog.fieldId)
+      && angular.isUndefined(vm.dialog.boxId)
+      && angular.isUndefined(vm.dialog.tabId)) {
+      vm.element = 'dialog';
+    } else if (angular.isUndefined(vm.dialog.fieldId)
      && angular.isUndefined(vm.dialog.boxId)
      && angular.isDefined(vm.dialog.tabId)) {
       vm.element = 'tab';
@@ -68,6 +72,11 @@
 
     // clone data from service
     switch (vm.element) {
+      case 'dialog':
+        vm.modalData = lodash.cloneDeep(
+          DialogEditor.getDialog()
+        );
+        break;
       case 'tab':
         vm.modalData = lodash.cloneDeep(
           DialogEditor.getDialogTabs()[
@@ -122,6 +131,11 @@
      */
     function modalUnchanged() {
       switch (vm.element) {
+        case 'dialog':
+          return lodash.isMatch(
+            DialogEditor.getDialog(),
+            vm.modalData
+          );
         case 'tab':
           return lodash.isMatch(
             DialogEditor.getDialogTabs()[
@@ -161,6 +175,10 @@
       // TODO: add verification for required forms
       // store data to service
       switch (vm.element) {
+        case 'dialog':
+          DialogEditor.getDialog().label = vm.modalData.label;
+          DialogEditor.getDialog().description = vm.modalData.description;
+          break;
         case 'tab':
           DialogEditor.getDialogTabs()[
             DialogEditor.activeTab

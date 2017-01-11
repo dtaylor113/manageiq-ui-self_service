@@ -25,7 +25,7 @@
      * Parameter: field -- id of the field in the box
      */
     vm.editDialogModal = function(tab, box, field) {
-      DialogEditorModal.showModal(tab, box, field);
+      DialogEditorModal.showModal(vm.service.getDialogId(), tab, box, field);
     };
   }
 })();

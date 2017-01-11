@@ -1,8 +1,10 @@
 <ol class="breadcrumb">
+  <li>{{'Designer'|translate}}</li>
   <li>
-    <a ui-sref="^"> <span class="fa fa-angle-double-left"/>&nbsp;{{'Back to My Dialogs'|translate}}</a>
+    <a ui-sref="designer.dialogs">{{'Dialogs'|translate}}</a>
   </li>
-  <li class="active"> <strong translate>Dialog:</strong> {{ ::vm.dialog.label }}
+  <li class="active">
+    {{ ::vm.dialog.label }}
   </li>
 </ol>
 

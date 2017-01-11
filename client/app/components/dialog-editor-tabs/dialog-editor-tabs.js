@@ -31,7 +31,7 @@
      * Show modal to edit Dialog details
      */
     vm.editDialogModal = function(tab) {
-      DialogEditorModal.showModal(tab);
+      DialogEditorModal.showModal(DialogEditor.getDialogId(), tab);
     };
 
     /**

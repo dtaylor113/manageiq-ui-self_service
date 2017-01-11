@@ -1,12 +1,23 @@
-<ol class="breadcrumb">
+<ol class="breadcrumb toolbar">
+  <li>{{'Designer'|translate}}</li>
   <li>
-    <a ui-sref="^">
-      <span class="fa fa-angle-double-left"/>&nbsp;{{'Back to Dialog Detail'|translate}}
-    </a>
+    <a ui-sref="designer.dialogs">{{'Dialogs'|translate}}</a>
   </li>
   <li class="active">
-    <strong translate>Dialog:</strong> {{ vm.dialog.label }}
+    <input id="dialogLabel" type="text" class="blueprint-name-input" ng-model="vm.dialog.content[0].label"
+           placeholder="{{'Untitled Dialog'|translate}}">
   </li>
+  <span class="actions">
+    <button class="btn btn-primary btb-sm" type="button" ng-click="vm.saveDialogDetails()" id="saveBtm"
+            ng-disabled="vm.dialogUnchanged()"
+            uib-tooltip="{{'Save Dialog'|translate}}" tooltip-placement="bottom"
+            translate>Save
+    </button>
+     <button class="btn btn-default" type="button" ng-click="vm.editDialogDetails()"
+             tooltip-placement="bottom" uib-tooltip="{{'Edit Dialog Details' | translate}}"
+             translate>Dialog Details
+     </button>
+  </span>
 </ol>
 
 <div class="col-md-12 ss-details-wrapper">
@@ -17,27 +28,6 @@
       <dialog-editor-boxes></dialog-editor-boxes>
     </div>
     <div class="col-md-6">
-      <h2 translate>General</h2>
-      <form class="form-horizontal">
-        <div pf-form-group
-             pf-label="{{'Name'|translate}}"
-             required>
-          <input id="name"
-                 name="name"
-                 ng-model="vm.dialog.content[0].label"
-                 type="text"
-                 required/>
-        </div>
-        <div pf-form-group
-             pf-label="{{'Description'|translate}}"
-             pf-input-class="col-sm-9">
-            <textarea id="description"
-                      name="description"
-                      ng-model="vm.dialog.content[0].description">
-              {{ vm.dialog.content[0].description }}
-            </textarea>
-        </div>
-      </form>
       <h2 translate>Toolbox</h2>
       <div class='draggable'>
         <dialog-editor-field-static></dialog-editor-field-static>

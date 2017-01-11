@@ -8,6 +8,7 @@
   function DialogEditorFactory() {
     var service = {
       data: {},
+      originalData: {},
       activeTab: 0,
     };
 
@@ -18,6 +19,27 @@
      */
     service.setData = function(data) {
       service.data = data;
+      service.originalData = angular.copy(data);
+    };
+
+    /**
+     * Test to see if data is unchanged from original.
+     */
+    service.isDialogDataUnchanged = function(data) {
+      // compare without 'active tab' property -which is added by the UI and messes up comparisons between orig and curr. data objects
+      var rawData = angular.copy(service.data);
+      rawData.content[0].dialog_tabs.forEach(function(tab) {
+        delete tab.active;
+      });
+
+      return angular.equals(rawData, service.originalData);
+    };
+
+    /**
+     * Return dialog loaded at service
+     */
+    service.getDialog = function() {
+      return service.data.content[0];
     };
 
     /**

@@ -47,15 +47,25 @@
   }
 
   /** @ngInject */
-  function StateController($state, dialog, DialogEditor, CollectionsApi,
+  function StateController($state, dialog, DialogEditor, DialogEditorModal, CollectionsApi,
            EventNotifications, lodash) {
     var vm = this;
 
     DialogEditor.setData(dialog);
 
     vm.dialog = dialog;
+    vm.editDialogDetails = editDialogDetails;
     vm.saveDialogDetails = saveDialogDetails;
     vm.dismissChanges = dismissChanges;
+    vm.dialogUnchanged = dialogUnchanged;
+
+    function dialogUnchanged() {
+      return DialogEditor.isDialogDataUnchanged();
+    }
+
+    function editDialogDetails() {
+      DialogEditorModal.showModal(DialogEditor.getDialogId());
+    }
 
     function dismissChanges() {
       if (angular.isUndefined(dialog.id)) {

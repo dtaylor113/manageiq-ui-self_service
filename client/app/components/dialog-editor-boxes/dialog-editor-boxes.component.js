@@ -64,7 +64,7 @@
      * Parameter: box -- id of the box in the tab
      */
     vm.editDialogModal = function(tab, box) {
-      DialogEditorModal.showModal(tab, box);
+      DialogEditorModal.showModal(vm.service.getDialogId(), tab, box);
     };
 
     /**
