@@ -18,7 +18,7 @@
         required_method_options: {},
         default_value: "",
         values_method_options: {},
-        label: "",
+        label: "label",
         position: 0,
         dynamic: false,
         show_refresh_button: false,
@@ -83,7 +83,7 @@
           __("Radio Button"),
           {
             data_type: "string",
-            values: [],
+            values: [[1, 'One'], [2, 'Two'], , [3, 'Three']],
             options: {sort_by: "description", sort_order: "ascending"},
           }
         ),

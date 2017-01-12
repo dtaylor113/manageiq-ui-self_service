@@ -1,11 +1,10 @@
-<div ng-switch on="vm.fieldData.type" class="form-group">
+<div ng-switch on="vm.fieldData.type" class="form-group tight">
   <label class="control-label col-sm-2">{{ vm.fieldData.label }}</label>
   <div class="col-sm-5">
 
     <!-- text box -->
     <input ng-switch-when="DialogFieldTextBox"
            ng-model="vm.fieldData.default_value"
-           class="form-control"
            type="{{ vm.fieldData.options.protected ? 'password' : 'text' }}"
            placeholder="{{'Default value'|translate}}">
 
@@ -21,7 +20,7 @@
     <input ng-switch-when="DialogFieldCheckBox"
            ng-model="vm.fieldData.default_value"
            ng-true-value="'t'"
-           class="form-control"
+           style="height: 20px; width: 20px;"
            type="checkbox">
 
     <!-- date control -->
@@ -32,7 +31,7 @@
 
     <!-- date time control -->
     <div ng-switch-when="DialogFieldDateTimeControl">
-      <div class="col-sm-6 dateTimePadding">
+      <div class="col-sm-6">
         <input ng-model="vm.fieldData.default_value"
                pf-datepicker options="vm.fieldData.dateOptions"
                date="vm.fieldData.default_value">
@@ -76,7 +75,7 @@
 
   </div>
   <div class="col-sm-5">
-    <button type="button" class="close"
+    <button type="button" class="close hide"
             ng-click="vm.editDialogModal(
               vm.service.activeTab,
               vm.boxPosition,
