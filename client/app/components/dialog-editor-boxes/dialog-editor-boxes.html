@@ -1,5 +1,5 @@
 <div class='dialog'>
-  <div style="background-color: #f1f1f1; padding: 20px;"
+  <div class="dialog-editor-container"
        ng-model='vm.dialogTabs[vm.service.activeTab].dialog_groups'
        ui-sortable='vm.sortableOptionsBox'
        ng-repeat='tab in vm.dialogTabs'
@@ -50,10 +50,11 @@
       </div>
       <h1 translate>Start with adding a box</h1>
     </div>
-    <div class="panel panel-default nosort">
+    <div class="add-section-box nosort">
       <a ng-click='vm.addBox()' translate>
-        <i class="pficon-add-circle-o"></i>&nbsp;Create Box
+        <i class="pficon-add-circle-o"></i>&nbsp;&nbsp;Add section
       </a>
     </div>
+    <div>&nbsp;</div>
   </div>
 </div>
