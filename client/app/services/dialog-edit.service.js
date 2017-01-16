@@ -5,11 +5,18 @@
     .factory('DialogEditor', DialogEditorFactory);
 
   /** @ngInject */
-  function DialogEditorFactory() {
+  function DialogEditorFactory($log) {
     var service = {
       data: {},
       originalData: {},
       activeTab: 0,
+    };
+
+    /**
+     */
+    service.toggleSelection = function(tab, box, field) {
+      var testObj = {tabId: tab, boxId: box, fieldId: field};
+      service.selected = angular.equals(testObj, service.selected) ? undefined : testObj;
     };
 
     /**

@@ -68,6 +68,19 @@
     };
 
     /**
+     */
+    vm.toggleSelection = function(tab, box, field) {
+      DialogEditor.toggleSelection(tab, box, field);
+    };
+
+    /**
+     */
+    vm.isSelected = function(tab, box, field) {
+      var testObj = {tabId: tab, boxId: box, fieldId: field};
+      return angular.equals(testObj, DialogEditor.selected);
+    };
+
+    /**
      * Handle drag&drop event
      */
     vm.droppableOptions = function(e, ui) {

@@ -29,13 +29,13 @@
     </button>
     <span class="more-actions">
         <a ng-click="vm.duplicateSelectedItem()">
-          <span id="duplicateItem" class="pficon fa fa-copy"
+          <span id="duplicateItem" class="pficon fa fa-copy" ng-class="{'disabled': !vm.isContentSelected()}"
                 tooltip-append-to-body="true" tooltip-placement="bottom"
                 uib-tooltip="{{'Duplicate Item (Ctrl-D)'|translate}}">
           </span>
         </a>
         <a ng-click="vm.removeSelectedItem()">
-          <span id="removeItems" class="pficon pficon-delete"
+          <span id="removeItems" class="pficon pficon-delete" ng-class="{'disabled': !vm.isContentSelected()}"
                 tooltip-append-to-body="true" tooltip-placement="bottom"
                 uib-tooltip="{{'Remove Items'|translate}}">
           </span>

@@ -48,7 +48,7 @@
 
   /** @ngInject */
   function StateController($state, dialog, DialogEditor, DialogEditorModal, CollectionsApi,
-           EventNotifications, lodash) {
+           EventNotifications, lodash, $log) {
     var vm = this;
 
     DialogEditor.setData(dialog);
@@ -59,6 +59,9 @@
     vm.saveDialogDetails = saveDialogDetails;
     vm.dismissChanges = dismissChanges;
     vm.dialogUnchanged = dialogUnchanged;
+    vm.isContentSelected = isContentSelected;
+    vm.duplicateSelectedItem = duplicateSelectedItem;
+    vm.removeSelectedItem = removeSelectedItem;
 
     vm.toolboxVisible = true;
 
@@ -80,6 +83,54 @@
       } else {
         $state.go('designer.dialogs.details', {dialogId: dialog.id});
       }
+    }
+
+    function isContentSelected() {
+      return angular.isDefined(DialogEditor.selected);
+    }
+
+    function duplicateSelectedItem() {
+      if (isContentSelected()) {
+        $log.warn("Duplicate is under development.");
+      }
+    }
+
+    function removeSelectedItem() {
+      if (isContentSelected()) {
+        if (DialogEditor.selected && angular.isDefined(DialogEditor.selected.fieldId)) {
+          removeField();
+        } else if (DialogEditor.selected && angular.isDefined(DialogEditor.selected.boxId)) {
+          removeBox();
+        }
+      }
+    }
+
+    function removeBox () {
+      var dialogTabs = DialogEditor.getDialogTabs();
+      lodash.remove(
+        dialogTabs[DialogEditor.activeTab].dialog_groups,
+        function(box) {
+          return box.position === DialogEditor.selected.boxId;
+        }
+      );
+      DialogEditor.updatePositions(
+        dialogTabs[DialogEditor.activeTab].dialog_groups
+      );
+      DialogEditor.selected = undefined;
+    }
+
+    function removeField () {
+      lodash.remove(
+        DialogEditor.getDialogTabs()[
+          DialogEditor.activeTab
+          ].dialog_groups[
+          DialogEditor.selected.boxId
+          ].dialog_fields,
+        function(field) {
+          return field.position === DialogEditor.selected.fieldId;
+        }
+      );
+      DialogEditor.selected = undefined;
     }
 
     function saveDialogDetails() {
