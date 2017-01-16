@@ -105,7 +105,7 @@
       }
     }
 
-    function removeBox () {
+    function removeBox() {
       var dialogTabs = DialogEditor.getDialogTabs();
       lodash.remove(
         dialogTabs[DialogEditor.activeTab].dialog_groups,
@@ -119,7 +119,7 @@
       DialogEditor.selected = undefined;
     }
 
-    function removeField () {
+    function removeField() {
       lodash.remove(
         DialogEditor.getDialogTabs()[
           DialogEditor.activeTab

@@ -83,7 +83,7 @@
           __("Radio Button"),
           {
             data_type: "string",
-            values: [[1, 'One'], [2, 'Two'], , [3, 'Three']],
+            values: [[1, 'One'], [2, 'Two'], [3, 'Three']],
             options: {sort_by: "description", sort_order: "ascending"},
           }
         ),

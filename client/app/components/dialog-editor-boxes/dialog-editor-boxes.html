@@ -16,12 +16,6 @@
         <div class="panel-heading"
           ng-mouseenter="vm[highlightBox_+$index] = true" ng-mouseleave="vm[highlightBox_+$index] = false">
           <strong style="padding-left: 8px;">{{ box.label }}</strong>
-          <button type="button" class="close hide show-on-hover"
-                  ng-click="vm.removeBox(box.position)">
-            <span aria-hidden="true">
-              <i class="fa header-fa fa-times"></i>
-            </span>
-          </button>
           <i class="pf header-pf pficon-edit close hide show-on-hover"
              ng-click='vm.editDialogModal(
                vm.service.activeTab,

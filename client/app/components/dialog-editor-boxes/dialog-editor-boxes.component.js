@@ -41,23 +41,6 @@
     };
 
     /**
-     * Delete box with all its content
-     *
-     * Parameter: id -- id of the box to remove
-     */
-    vm.removeBox = function(id) {
-      lodash.remove(
-        vm.dialogTabs[DialogEditor.activeTab].dialog_groups,
-        function(box) {
-          return box.position === id;
-        }
-      );
-      DialogEditor.updatePositions(
-        vm.dialogTabs[DialogEditor.activeTab].dialog_groups
-      );
-    };
-
-    /**
      * Show modal to edit label and description of the Box
      *
      * Parameter: tab -- id of the tab in the dialog
@@ -77,6 +60,7 @@
      */
     vm.isSelected = function(tab, box, field) {
       var testObj = {tabId: tab, boxId: box, fieldId: field};
+
       return angular.equals(testObj, DialogEditor.selected);
     };
 
@@ -89,6 +73,8 @@
       DialogEditor.updatePositions(
         droppedItem.box.dialog_fields
       );
+
+      DialogEditor.selected = undefined;
     };
 
     vm.sortableOptionsBox = {
