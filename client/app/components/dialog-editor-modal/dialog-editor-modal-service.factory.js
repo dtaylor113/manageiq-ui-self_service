@@ -40,7 +40,6 @@
     angular.extend(vm, {
       dialog: dialogDetails,
       saveDialogFieldDetails: saveDialogFieldDetails,
-      deleteField: deleteField,
       modalUnchanged: modalUnchanged,
       addEntry: addEntry,
       removeEntry: removeEntry,
@@ -56,14 +55,17 @@
       && angular.isUndefined(vm.dialog.boxId)
       && angular.isUndefined(vm.dialog.tabId)) {
       vm.element = 'dialog';
+      vm.modalTitle = __("Edit Dialog Details");
     } else if (angular.isUndefined(vm.dialog.fieldId)
      && angular.isUndefined(vm.dialog.boxId)
      && angular.isDefined(vm.dialog.tabId)) {
       vm.element = 'tab';
+      vm.modalTitle = __("Edit Tab Details");
     } else if (angular.isUndefined(vm.dialog.fieldId)
             && angular.isDefined(vm.dialog.boxId)
             && angular.isDefined(vm.dialog.tabId)) {
       vm.element = 'box';
+      vm.modalTitle = __("Edit Section Details");
     } else if (angular.isDefined(vm.dialog.fieldId)
             && angular.isDefined(vm.dialog.boxId)
             && angular.isDefined(vm.dialog.tabId)) {
@@ -108,6 +110,40 @@
           resolveCategories(CollectionsApi).then(function(categories) {
             vm.categories = categories;
           });
+        }
+        // set modal title
+        if (!vm.modalData.dynamic) {
+          var titleLabel;
+
+          switch (vm.modalData.type) {
+            case 'DialogFieldTextBox':
+              titleLabel = __("Text Box");
+              break;
+            case 'DialogFieldTextAreaBox':
+              titleLabel = __("Text Area");
+              break;
+            case 'DialogFieldCheckBox':
+              titleLabel = __("Check Box");
+              break;
+            case 'DialogFieldDropDownList':
+              titleLabel = __("Dropdown");
+              break;
+            case 'DialogFieldRadioButton':
+              titleLabel = __("Radio Button");
+              break;
+            case 'DialogFieldDateControl':
+              titleLabel = __("Datepicker");
+              break;
+            case 'DialogFieldDateTimeControl':
+              titleLabel = __("Timepicker");
+              break;
+            case 'DialogFieldTagControl':
+              titleLabel = __("Tag Control");
+              break;
+          }
+          vm.modalTitle =  __("Edit") + " " + titleLabel + " " + __("Field");
+        } else {
+          vm.modalTitle = vm.modalTitle = __("Edit Field");
         }
         break;
       default:
@@ -214,25 +250,6 @@
         default:
           break;
       }
-
-      // close modal
-      $uibModalInstance.close();
-    }
-
-    /**
-     * Delete dialog field selected in modal
-     */
-    function deleteField() {
-      lodash.remove(
-        DialogEditor.getDialogTabs()[
-          DialogEditor.activeTab
-        ].dialog_groups[
-          vm.dialog.boxId
-        ].dialog_fields,
-        function(field) {
-          return field.position === vm.dialog.fieldId;
-        }
-      );
 
       // close modal
       $uibModalInstance.close();
