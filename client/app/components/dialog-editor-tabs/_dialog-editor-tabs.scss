@@ -1,13 +1,23 @@
-.delete-tab {
-  opacity: .3;
-  visibility: visible;
+.create-tab {
+  cursor: pointer !important;
 }
 
 .select-tab {
+  cursor: pointer !important;
+
   &:hover {
-    .delete-tab {
-      opacity: 1;
-      visibility: visible;
+    i {
+      padding-left: 4px;
+      display: initial !important;
     }
   }
 }
+
+.tab-icon {
+  opacity: .6;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
