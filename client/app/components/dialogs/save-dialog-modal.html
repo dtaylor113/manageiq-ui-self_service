@@ -2,7 +2,7 @@
   <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true">
     <span class="pficon pficon-close"></span>
   </button>
-  <h3 class="modal-title" translate>Save Changes to {{vm.blueprint.name}}?</h3>
+  <h3 class="modal-title" translate>Save Changes to {{vm.dialog.content[0].label}}?</h3>
 </div>
 <div class="modal-body">
   <h4 translate>If you don't save, your changes will be lost.</h4>
@@ -13,7 +13,6 @@
   <button type="button"
           class="btn btn-primary"
           ng-click="vm.save()"
-          ng-disabled="vm.modalData.catalogName.length == 0"
           translate>
           Save
   </button>

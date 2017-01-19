@@ -48,8 +48,20 @@
 
   /** @ngInject */
   function StateController($state, dialog, DialogEditor, DialogEditorModal, CollectionsApi,
-           EventNotifications, lodash, $log) {
+           EventNotifications, SaveDialogModal, lodash, $scope, $log) {
     var vm = this;
+
+    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+      if (toState.name === 'login') {
+        return;
+      }
+      if ((fromState.name === "designer.dialogs.edit" || fromState.name === "") && toState.name !== "designer.dialogs.edit") {
+        if (!DialogEditor.doNotSave() && !DialogEditor.isDialogDataUnchanged() && !event.defaultPrevented) {
+          SaveDialogModal.showModal(vm.dialog, toState, toParams, fromState, fromParams);
+          event.preventDefault();
+        }
+      }
+    });
 
     DialogEditor.setData(dialog);
 
@@ -134,46 +146,13 @@
     }
 
     function saveDialogDetails() {
-      var action, dialogData;
-
-      // load dialog data
-      if (angular.isUndefined(DialogEditor.getDialogId())) {
-        action = 'create';
-        dialogData = {
-          description: DialogEditor.getDialogDescription(),
-          label: DialogEditor.getDialogLabel(),
-          dialog_tabs: [],
-        };
-        lodash.cloneDeep(DialogEditor.getDialogTabs()).forEach(function(tab) {
-          delete tab.active;
-          dialogData.dialog_tabs.push(tab);
-        });
-      } else {
-        action = 'edit';
-        dialogData = {
-          description: DialogEditor.getDialogDescription(),
-          label: DialogEditor.getDialogLabel(),
-          content: {
-            dialog_tabs: [],
-          },
-        };
-        lodash.cloneDeep(DialogEditor.getDialogTabs()).forEach(function(tab) {
-          delete tab.active;
-          dialogData.content.dialog_tabs.push(tab);
-        });
-      }
-
-      // save the dialog
-      CollectionsApi.post(
-        'service_dialogs',
-        DialogEditor.getDialogId(),
-        {},
-        angular.toJson({action: action, resource: dialogData})
-      ).then(saveSuccess, saveFailure);
+      DialogEditor.saveDialogDetails().then(saveSuccess, saveFailure);
     }
 
     function saveSuccess() {
       EventNotifications.success(vm.dialog.content[0].label + __(' was saved'));
+      // reset for nav. away
+      DialogEditor.setData(vm.dialog);
       $state.go('designer.dialogs.list');
     }
 
